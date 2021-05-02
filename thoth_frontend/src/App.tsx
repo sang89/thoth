@@ -1,5 +1,6 @@
 import './App.css';
 import ThothButton from './Components/ThothButton';
+import ThothTextField from './Components/ThothTextField';
 
 function App() {
   return (
@@ -8,8 +9,13 @@ function App() {
         color = "primary"
         variant = "contained" 
       />
-      <ThothButton
-        color = "secondary" 
+      <ThothTextField
+        variant = "outlined" 
+        id = "abc"
+      />
+      <ThothTextField
+        variant = "outlined"
+        id = "abc"
       />
     </>
   );
