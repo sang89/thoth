@@ -1,7 +1,7 @@
 import './App.css';
-import ThothButton from './Components/ThothButton';
-import ThothTextField from './Components/ThothTextField';
-import ThothAppBar from './Components/ThothAppBar';
+import ThothButton from './components/ThothButton';
+import ThothTextField from './components/ThothTextField';
+import ThothAppBar from './components/ThothAppBar';
 import Grid from '@material-ui/core/Grid';
 
 function App() {

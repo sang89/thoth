@@ -1,6 +1,6 @@
 import React from 'react';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core';
-import {AppBar, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu} from '@material-ui/core';
+import {AppBar, Toolbar, IconButton, Typography, MenuItem, Menu} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
