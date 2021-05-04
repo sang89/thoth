@@ -7,23 +7,27 @@ import { ThothDashboard } from './components/ThothDashboard';
 const App = () => {
   
   return (
-    <BrowserRouter>
-      <Switch>
-          {
-            routes.map(route => {
-              return (
-                  <Route
-                    key = { route.path }
-                    exact = { route.exact }
-                    path = { route.path }
-                    component = { route.component } 
-                  />
-              );
-            })
-          }
-          <Redirect to="/404" />
-      </Switch>
-    </BrowserRouter>
+    <>
+      <ThothDashboard>
+        <BrowserRouter>
+          <Switch>
+              {
+                routes.map(route => {
+                  return (
+                      <Route
+                        key = { route.path }
+                        exact = { route.exact }
+                        path = { route.path }
+                        component = { route.component } 
+                      />
+                  );
+                })
+              }
+              <Redirect to="/404" />
+          </Switch>
+        </BrowserRouter>
+      </ThothDashboard>
+    </>
   );
 }
 
