@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core';
 import {AppBar, Toolbar, IconButton, Typography, MenuItem, Menu} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import ThothDrawer from './ThothDrawer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -137,6 +138,11 @@ export default function ThothAppBar() {
       </MenuItem>
     </Menu>
   );
+  
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const handleMenuIconOnClick = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   return (
     <div className={classes.grow}>
@@ -147,9 +153,11 @@ export default function ThothAppBar() {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={handleMenuIconOnClick}
           >
             <MenuIcon />
           </IconButton>
+          <ThothDrawer open={drawerOpen} setOpen={setDrawerOpen}/>
           <Typography className={classes.title} variant="h6" noWrap>
             THOTH
           </Typography>
