@@ -1,30 +1,29 @@
 import './App.css';
-import ThothButton from './Components/ThothButton';
-import ThothTextField from './Components/ThothTextField';
-import ThothAppBar from './Components/ThothAppBar';
-import Grid from '@material-ui/core/Grid';
+import React from 'react';
+import { routes } from './routes';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { ThothDashboard } from './components/ThothDashboard';
 
-function App() {
+const App = () => {
+  
   return (
-    <>
-      <Grid container spacing={3} direction="row" justify="center" alignItems="center">
-        <Grid item xs={12}>
-          <ThothAppBar
-
-          />
-        </Grid>
-        <Grid item xs>
-          <ThothTextField
-            variant = "outlined" 
-            id = "abc"
-          />
-          <ThothButton
-            color = "primary"
-            variant = "contained" 
-          />
-        </Grid>
-      </Grid>
-    </>
+    <BrowserRouter>
+      <Switch>
+          {
+            routes.map(route => {
+              return (
+                  <Route
+                    key = { route.path }
+                    exact = { route.exact }
+                    path = { route.path }
+                    component = { route.component } 
+                  />
+              );
+            })
+          }
+          <Redirect to="/404" />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
