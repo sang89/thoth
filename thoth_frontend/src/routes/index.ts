@@ -1,6 +1,7 @@
 import * as constants from './constants';
 import HomePage from '../pages/HomePage';
-import INPUT_QUERY_PAGE from '../pages/InputQueryPage';
+import InputQueryPage from '../pages/InputQueryPage';
+import LogInPage from '../pages/LogInPage';
 
 export const routes = [
     {
@@ -13,6 +14,12 @@ export const routes = [
         path: constants.INPUT_QUERY_PAGE,
         exact: true,
         name: "Input Query Page",
-        component: INPUT_QUERY_PAGE,
+        component: InputQueryPage,
+    },
+    {
+        path: constants.LOG_IN,
+        exact: true,
+        name: "Log In",
+        component: LogInPage,
     }
 ];

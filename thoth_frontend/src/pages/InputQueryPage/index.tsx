@@ -1,3 +1,3 @@
-export default function INPUT_QUERY_PAGE() {
+export default function InputQueryPage() {
     return <div>This is input query page</div>
 };
