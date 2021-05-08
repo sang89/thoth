@@ -1,3 +1,6 @@
-export const HOME_PAGE = '/homepage';
+export const HOME_PAGE = '/home';
+export const HOME_PAGE_NAME = "homepage";
 export const INPUT_QUERY_PAGE = '/input-query';
-export const LOG_IN = '/login';
+export const INPUT_QUERY_PAGE_NAME = "input query page";
+export const LOG_IN_PAGE = '/login';
+export const LOG_IN_PAGE_NAME = "log in page";
