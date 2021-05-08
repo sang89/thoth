@@ -7,19 +7,19 @@ export const routes = [
     {
         path: constants.HOME_PAGE,
         exact: true,
-        name: "Homepage",
+        name: constants.HOME_PAGE_NAME,
         component: HomePage,
     },
     {
         path: constants.INPUT_QUERY_PAGE,
         exact: true,
-        name: "Input Query Page",
+        name: constants.INPUT_QUERY_PAGE_NAME,
         component: InputQueryPage,
     },
     {
-        path: constants.LOG_IN,
+        path: constants.LOG_IN_PAGE,
         exact: true,
-        name: "Log In",
+        name: constants.LOG_IN_PAGE_NAME,
         component: LogInPage,
     }
 ];
