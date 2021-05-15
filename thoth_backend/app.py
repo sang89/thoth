@@ -3,12 +3,13 @@ import flask
 import flask_sqlalchemy
 import flask_praetorian
 import flask_cors
+import pymongo
+from pymongo import MongoClient
 from flask import request
 
-db = flask_sqlalchemy.SQLAlchemy()
 guard = flask_praetorian.Praetorian()
 cors = flask_cors.CORS()
-
+'''
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.Text, unique = True)
@@ -37,7 +38,7 @@ class User(db.Model):
 
     def is_valid(self):
         return self.is_active
-
+'''
 
 # Initialize Flask app
 app = flask.Flask(__name__)
@@ -46,26 +47,35 @@ app.config['SECRET_KEY'] = 'top_secret'
 app.config['JWT_ACCESS_LIFESPAN'] = {'hours': 24}
 app.config['JWT_REFRESH_LIFESPAN'] = {'days': 30}
 
+
 # Initialize Flask praetorian 
-guard.init_app(app, User)
+#guard.init_app(app, User)
 
 # initilize a local database
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.getcwd(), 'database.db')}"
-db.init_app(app)
+client = MongoClient('mongodb://localhost:27017/')
+mongodb = client['Thoth']
+user_credentials_collection = mongodb['User Credentials']
+# app.config["MONGO_URI"] = "mongodb://localhost:27017/Thoth/User Credentials"
+# mongo = PyMongo(app)
+print('Collection is', user_credentials_collection)
 
 # Initialize CORS so that api_tool can talk to example app
 cors.init_app(app)
 
 # Add users
-with app.app_context():
-    db.create_all()
-    if db.session.query(User).filter_by(username='Sang').count() < 1:
-        db.session.add(User(
-          username='Sang',
-          password=guard.hash_password('strongpassword'),
-          roles='admin'
-            ))
-    db.session.commit()
+@app.route('/api/find-user', methods = ['GET', 'POST'])
+def find_user():
+    username = request.args.get('username', None)
+    print('username is', username)
+    user_record = user_credentials_collection.find_one({"username": username})
+    print('user record is', user_record)
+    fmt_user_record = dict()
+    for key, value in user_record.items():
+        if key != '_id':
+            fmt_user_record[key] = value
+    print('Formatted rec', fmt_user_record)
+    return fmt_user_record, 200
+
 
 # Set up some routes
 @app.route('/api/')
