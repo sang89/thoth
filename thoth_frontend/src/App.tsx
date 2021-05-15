@@ -3,9 +3,14 @@ import React from 'react';
 import { routes } from './routes';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { ThothDashboard } from './components/ThothDashboard';
+import axios from 'axios';
 
 const App = () => {
-  
+
+  axios.get('http://localhost:5000/api/find-user?username=teo').then(res => {
+    console.log('result is', res);
+  });
+
   return (
     <>
       <ThothDashboard>
