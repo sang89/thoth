@@ -7,10 +7,6 @@ import axios from 'axios';
 
 const App = () => {
 
-  axios.get('http://localhost:5000/api/find-user?username=teo').then(res => {
-    console.log('result is', res);
-  });
-
   return (
     <>
       <ThothDashboard>
