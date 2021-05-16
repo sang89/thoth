@@ -16,3 +16,19 @@ export const findUser = async (email:string, username: string) => {
     
     return already_existed;
 };
+
+
+export const signupUser = async (email:string, username:string, password: string) => {
+    let successful = false;
+    await axios.post(paths.SIGN_UP_USER, {
+            email: email,
+            username: username,
+            password: password
+        }
+    )
+    .then(function (res) {
+        console.log('res is', res);
+    });
+
+    return successful;
+};

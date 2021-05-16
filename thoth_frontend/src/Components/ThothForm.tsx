@@ -29,9 +29,26 @@ export default function ThothForm(props: any){
     
     const handleSubmit = async () => {
       const user_existed = await apis.findUser(email, username);
+
+      if (user_existed) {
+
+      } else {
+        const res = await apis.signupUser(email, username, password);
+      }
       console.log(email, username, password);
     };
+    
+    
 
+    const test = async () => {
+      const username = 'new guy';
+      const password = 'test';
+      const email = 'some email';
+      await apis.signupUser(email, username, password);
+    }
+
+    test();
+    
     return (
       <form className={classes.root}>
           <TextField 
