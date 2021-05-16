@@ -6,6 +6,7 @@ import flask_cors
 import pymongo
 from pymongo import MongoClient
 from flask import request
+import json
 
 guard = flask_praetorian.Praetorian()
 cors = flask_cors.CORS()
@@ -55,32 +56,60 @@ app.config['JWT_REFRESH_LIFESPAN'] = {'days': 30}
 client = MongoClient('mongodb://localhost:27017/')
 mongodb = client['Thoth']
 user_credentials_collection = mongodb['User Credentials']
-# app.config["MONGO_URI"] = "mongodb://localhost:27017/Thoth/User Credentials"
-# mongo = PyMongo(app)
-print('Collection is', user_credentials_collection)
 
 # Initialize CORS so that api_tool can talk to example app
 cors.init_app(app)
 
-# Add users
-@app.route('/api/find-user', methods = ['GET', 'POST'])
+# Find a user
+@app.route('/find-user', methods = ['GET'])
+def check_if_user_exists(username, email):
+    user_record = user_credentials_collection.find_one({'username': username})
+    email_record = user_credentials_collection.find_one({'email': email})
+    already_existed = (user_record != None) or (email_record != None)
+    return already_existed
+
 def find_user():
     username = request.args.get('username', None)
-    print('username is', username)
-    user_record = user_credentials_collection.find_one({"username": username})
-    print('user record is', user_record)
-    fmt_user_record = dict()
-    for key, value in user_record.items():
-        if key != '_id':
-            fmt_user_record[key] = value
-    print('Formatted rec', fmt_user_record)
-    return fmt_user_record, 200
+    email = request.args.get('email', None)
+    already_existed = check_if_user_exists(username, email)
+    return_json = {
+        'username': username,
+        'already_existed': already_existed
+    }
+    return return_json, 200
 
+# Sign up a new user
+@app.route('/signup', methods=['POST'])
+def sign_up():
+    username = request.args.get('username', None)
+    email = request.args.get('email', None)
+    password = request.args.get('password', None)
+    new_record = {
+        'username': username,
+        'password': password,
+        'email': email
+    }
+    try:
+        res = user_credentials_collection.insert_one(new_record)
+        return_json = {
+            'input': {
+                'username': username,
+                'password': password,
+                'email': email
+            },
+            'successful': True
+        }
+        return json.dumps(return_json), 200
+    except:
+        return json.dumps({
+            'input': {
+                'username': username,
+                'password': password,
+                'email': email
+            },
+            'successful': False
+        }), 200
 
-# Set up some routes
-@app.route('/api/')
-def home():
-    return {"Hello": "World"}, 200
 
 @app.route('/api/login', methods = ['POST'])
 def login():
