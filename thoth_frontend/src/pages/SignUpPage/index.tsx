@@ -1,4 +1,4 @@
-import ThothForm from '../../components/ThothForm';
+import ThothForm from '../../components/ThothSignUpForm';
 
 export default function SignUpPage() {
     
