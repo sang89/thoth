@@ -1,3 +1,5 @@
+import utils
+
 import os
 import flask
 import flask_sqlalchemy
@@ -7,6 +9,7 @@ import pymongo
 from pymongo import MongoClient
 from flask import request
 import json
+
 
 guard = flask_praetorian.Praetorian()
 cors = flask_cors.CORS()
@@ -62,51 +65,44 @@ cors.init_app(app)
 
 # Find a user
 @app.route('/find-user', methods = ['GET'])
-def check_if_user_exists(username, email):
-    user_record = user_credentials_collection.find_one({'username': username})
-    email_record = user_credentials_collection.find_one({'email': email})
-    already_existed = (user_record != None) or (email_record != None)
-    return already_existed
-
 def find_user():
     username = request.args.get('username', None)
     email = request.args.get('email', None)
     already_existed = check_if_user_exists(username, email)
     return_json = {
         'username': username,
+        'email': email,
         'already_existed': already_existed
     }
     return return_json, 200
 
+def check_if_user_exists(username, email=None):
+    user_record = user_credentials_collection.find_one({'username': username})
+    email_record = user_credentials_collection.find_one({'email': email})
+    already_existed = (user_record != None) or (email_record != None)
+    return already_existed
+
 # Sign up a new user
 @app.route('/signup', methods=['POST'])
 def sign_up():
-    username = request.args.get('username', None)
-    email = request.args.get('email', None)
-    password = request.args.get('password', None)
-    new_record = {
-        'username': username,
-        'password': password,
-        'email': email
-    }
+    res = request.get_json()
+    username = res['username']
+    email = res['email']
+    password = res['password']
+    new_record = dict()
+    new_record['username'] = username
+    new_record['email'] = email
+    new_record['password'] = password
     try:
-        res = user_credentials_collection.insert_one(new_record)
+        res = user_credentials_collection.insert(new_record)
         return_json = {
-            'input': {
-                'username': username,
-                'password': password,
-                'email': email
-            },
+            'input': new_record,
             'successful': True
         }
-        return json.dumps(return_json), 200
+        return utils.parse_json(return_json), 200
     except:
-        return json.dumps({
-            'input': {
-                'username': username,
-                'password': password,
-                'email': email
-            },
+        return utils.parse_json({
+            'input': new_record,
             'successful': False
         }), 200
 

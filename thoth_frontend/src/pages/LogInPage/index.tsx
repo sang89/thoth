@@ -36,9 +36,9 @@ export default function LoginPage() {
             />
           </Grid>
           <Grid item xs={12} >
-            <Button type="button" color="primary" className="login-button">
+            <Button variant="contained" type="button" color="primary">
               Log in
-              </Button>
+            </Button>
           </Grid>
         </Grid>
       </form>
