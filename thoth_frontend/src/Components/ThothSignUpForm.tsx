@@ -1,6 +1,8 @@
 import { Button, makeStyles, TextField } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import * as apis from "../APIs/login";
+import * as routes from "../routes/constants";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,22 +31,42 @@ export default function ThothForm(props: any){
     const [password, setPassword] = useState('');
     const [success, setSuccess] = useState(false);
     
+    const history = useHistory();
+    
     const registerUser = async (email: string, username: string, password: string) => {
-      const res = await apis.signUp(email, username, password);
-      setSuccess(res);
+      await apis.signUp(email, username, password).then(res => {
+        console.log('res is', res);
+        setSuccess(res);
+      });
     };
 
     const handleSubmit = async () => {
       await apis.userAlreadyExisted(email, username).then(response => {
         const already_existed = response;
+        setUserExisted(already_existed);
         if (!already_existed) {
           registerUser(email, username, password);
         }
       });
     };
 
+    const handleCancel = () => {
+      setEmail('');
+      setUsername('');
+      setPassword('');
+      setUserExisted(false);
+    };
+    
+    useEffect(() => {
+      if (success) {
+        history.push(`${routes.LOG_IN_WITHOUT_DEFAULT}/${username}`);
+      }
+    }, [success]);
+
     return (
       <form className={classes.root}>
+          {success ? <></> : 
+          <>
           <TextField 
             label="Email" 
             variant="filled" 
@@ -53,7 +75,7 @@ export default function ThothForm(props: any){
             value={email} 
             onChange={e => setEmail(e.target.value)} 
             error={userExisted}
-            helperText="User already registered"
+            helperText={userExisted ? "User already registered": ""}
           />
           <TextField 
             label="Username" 
@@ -63,7 +85,7 @@ export default function ThothForm(props: any){
             value={username}
             onChange={e=> setUsername(e.target.value)} 
             error={userExisted}
-            helperText="User already registered"
+            helperText={userExisted ? "User already registered": ""}
           />
           <TextField 
             label="Password" 
@@ -74,15 +96,15 @@ export default function ThothForm(props: any){
             onChange={e => setPassword(e.target.value)} 
           />
           <div>
-            <Button variant="contained">
+            <Button variant="contained" onClick={handleCancel}>
                 Cancel
             </Button>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
                 Signup
             </Button>
           </div>
+          </>}
       </form>
     )
 }
-
 

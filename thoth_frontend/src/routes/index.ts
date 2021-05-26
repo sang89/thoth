@@ -19,7 +19,7 @@ export const routes = [
     },
     {
         path: constants.LOG_IN_PAGE,
-        exact: true,
+        exact: false,
         name: constants.LOG_IN_PAGE_NAME,
         component: LogInPage,
     },
