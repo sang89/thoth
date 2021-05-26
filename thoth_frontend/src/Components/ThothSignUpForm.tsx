@@ -33,18 +33,14 @@ export default function ThothForm(props: any){
       const res = await apis.signUp(email, username, password);
       setSuccess(res);
     };
-    
-    const checkIfExisted = async () => {
-      const res = await apis.userAlreadyExisted(email, username);
-      return res;
-    };
 
     const handleSubmit = async () => {
-      const already_existed = checkIfExisted();
-      if (!already_existed) {
-        console.log('we should not be here', already_existed)
-        await registerUser(email, username, password);
-      }
+      await apis.userAlreadyExisted(email, username).then(response => {
+        const already_existed = response;
+        if (!already_existed) {
+          registerUser(email, username, password);
+        }
+      });
     };
 
     return (
