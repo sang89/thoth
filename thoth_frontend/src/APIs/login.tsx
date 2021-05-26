@@ -3,21 +3,24 @@ import _ from 'lodash';
 import * as paths from './constants';
 
 export const findUser = async (email: string, username: string) => {
-    const res = axios.get(paths.FIND_USER_PATH, {
+    let res;
+    await axios.get(paths.FIND_USER_PATH, {
         params: {
             email: email,
             username: username,
         }
+    }).then(response => {
+        res = _.get(response, 'data');
     });
     return res;
 };
 
 export const userAlreadyExisted = async (email: string, username: string): Promise<any> => {
-    await findUser(email, username).then((res: any) => {
-        const already_existed = _.get(res, 'already_existed');
+    const existed = await findUser(email, username).then(response => {
+        const already_existed = _.get(response, "already_existed");
         return already_existed;
     });
-    return null;
+    return existed;
 }
 
 
