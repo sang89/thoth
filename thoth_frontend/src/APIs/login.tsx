@@ -24,15 +24,14 @@ export const userAlreadyExisted = async (email: string, username: string): Promi
 }
 
 
-export const signUp = async (email: string, username: string, password: string) => {
-    let success = false;
-    await axios.post(paths.SIGN_UP_USER, {
+export const signUp = async (email: string, username: string, password: string): Promise<any> => {
+    return await axios.post(paths.SIGN_UP_USER, {
         'email': email,
         'username': username,
         'password': password,
-    }).then(function (res) {
-        success = _.get(res, 'successful');
+    }).then(res => {
+        const data =  _.get(res, 'data')
+        const success = _.get(data, 'successful');
+        return success;
     });
-
-    return success;
 }
