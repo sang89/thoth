@@ -21,61 +21,48 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-export default function ThothForm(props: any){
+interface CredentialFormProps {
+    handleSubmit: () => void;
+    handleCancel: () => void;
+    error: boolean;
+    errorMsg: string;
+    emailNeeded: boolean;
+    mainButtonText: string;
+}
+
+export default function ThothCredentialForm(props: CredentialFormProps){
     
     const classes = useStyles();
     
-    const [userExisted, setUserExisted] = useState(false);
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [success, setSuccess] = useState(false);
     
-    const history = useHistory();
-    
-    const registerUser = async (email: string, username: string, password: string) => {
-      await apis.signUp(email, username, password).then(res => {
-        setSuccess(res);
-      });
-    };
+    const handleSubmit = props.handleSubmit;
 
-    const handleSubmit = async () => {
-      await apis.userAlreadyExisted(email, username).then(response => {
-        const already_existed = response;
-        setUserExisted(already_existed);
-        if (!already_existed) {
-          registerUser(email, username, password);
-        }
-      });
-    };
+    const handleCancel = props.handleCancel;
+    const [error, setError] = useState(props.error);
+    const [errorMsg, setErrorMsg] = useState(props.errorMsg);
 
-    const handleCancel = () => {
-      setEmail('');
-      setUsername('');
-      setPassword('');
-      setUserExisted(false);
-    };
-    
     useEffect(() => {
-      if (success) {
-        history.push(`${routes.LOG_IN_WITHOUT_DEFAULT}/${username}`);
-      }
-    }, [success]);
+        setError(props.error);
+        setErrorMsg(props.errorMsg);
+    }, [props]);
 
     return (
       <form className={classes.root}>
-          {success ? <></> : 
-          <>
-          <TextField 
-            label="Email" 
-            variant="filled" 
-            type="email" 
-            required
-            value={email} 
-            onChange={e => setEmail(e.target.value)} 
-            error={userExisted}
-            helperText={userExisted ? "User already registered": ""}
-          />
+          { props.emailNeeded ? 
+            <TextField 
+                label="Email" 
+                variant="filled" 
+                type="email" 
+                required
+                value={email} 
+                onChange={e => setEmail(e.target.value)} 
+                error={error}
+                helperText={error ? errorMsg : ""}
+            />
+          : <></>}
           <TextField 
             label="Username" 
             variant="filled"
@@ -83,8 +70,8 @@ export default function ThothForm(props: any){
             required 
             value={username}
             onChange={e=> setUsername(e.target.value)} 
-            error={userExisted}
-            helperText={userExisted ? "User already registered": ""}
+            error={error}
+            helperText={error ? errorMsg : ""}
           />
           <TextField 
             label="Password" 
@@ -93,16 +80,17 @@ export default function ThothForm(props: any){
             required 
             value={password}
             onChange={e => setPassword(e.target.value)} 
+            error={error}
+            helperText={error ? errorMsg : ""}
           />
           <div>
             <Button variant="contained" onClick={handleCancel}>
                 Cancel
             </Button>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
-                Signup
+                { props.mainButtonText }
             </Button>
           </div>
-          </>}
       </form>
     )
 }

@@ -1,8 +1,8 @@
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
-import { useLocation, useParams  } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams  } from "react-router-dom";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
