@@ -1,7 +1,7 @@
 export const HOME_PAGE = '/home';
 export const HOME_PAGE_NAME = "homepage";
-export const INPUT_QUERY_PAGE = '/input-query';
-export const INPUT_QUERY_PAGE_NAME = "input query page";
+export const SEARCH_PAGE = '/search';
+export const SEARCH_PAGE_NAME = "search page";
 export const LOG_IN_WITHOUT_DEFAULT = '/login';
 export const LOG_IN_PAGE = '/login/:defaultUsername?';
 export const LOG_IN_PAGE_NAME = "log in page";

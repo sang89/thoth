@@ -65,7 +65,7 @@ export default function LoginPage() {
       <Button variant="contained" color="primary" onClick={handleLogIn}>
         Log in
       </Button>
-      <Link href="#" onClick={handleSignUpLink}>
+      <Link href="" onClick={handleSignUpLink}>
         Don't have an account yet ? Signup
       </Link>
     </form>

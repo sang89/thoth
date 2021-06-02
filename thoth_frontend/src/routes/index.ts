@@ -1,6 +1,6 @@
 import * as constants from './constants';
 import HomePage from '../pages/HomePage';
-import InputQueryPage from '../pages/InputQueryPage';
+import SearchPage from '../pages/SearchPage';
 import LogInPage from '../pages/LogInPage';
 import SignUpPage from '../pages/SignUpPage';
 
@@ -12,10 +12,10 @@ export const routes = [
         component: HomePage,
     },
     {
-        path: constants.INPUT_QUERY_PAGE,
+        path: constants.SEARCH_PAGE,
         exact: true,
-        name: constants.INPUT_QUERY_PAGE_NAME,
-        component: InputQueryPage,
+        name: constants.SEARCH_PAGE_NAME,
+        component: SearchPage,
     },
     {
         path: constants.LOG_IN_PAGE,
