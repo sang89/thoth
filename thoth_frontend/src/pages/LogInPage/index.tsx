@@ -1,7 +1,9 @@
 import { makeStyles, Button, TextField, Link } from "@material-ui/core";
-import { useParams, useHistory  } from "react-router-dom";
-import { useState } from "react";
+import { useParams, useHistory, Redirect  } from "react-router-dom";
+import React, { useState } from "react";
 import * as routes from "../../routes/constants";
+import { connect } from "react-redux";
+import { login } from "../../actions/auth";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function LoginPage() {
+function LoginPage(props: any) {
 
   const classes = useStyles();
   
@@ -31,13 +33,25 @@ export default function LoginPage() {
   const [userExisted, setUserExisted] = useState(false);
 
   const history = useHistory()
-
   const handleLogIn = () => {
-
+    const { dispatch, history } = props;
+    dispatch(login(username, password))
+      .then(() => {
+        history.push("/home");
+        window.location.reload();
+      })
+      .catch(() => {
+    });
   };
 
   const handleSignUpLink = () => {
     history.push(`${routes.SIGN_UP_PAGE}`);
+  }
+  
+  const { isLoggedIn, message } = props;
+
+  if (isLoggedIn) {
+    return <Redirect to="/home" />;
   }
 
   return (
@@ -71,3 +85,14 @@ export default function LoginPage() {
     </form>
   );
 }
+
+function mapStateToProps(state: any) {
+  const { isLoggedIn } = state.auth;
+  const { message } = state.message;
+  return {
+    isLoggedIn,
+    message
+  };
+}
+
+export default connect(mapStateToProps)(LoginPage);
