@@ -51,6 +51,7 @@ function LoginPage(props: any) {
   const { isLoggedIn, message } = props;
 
   if (isLoggedIn) {
+    console.log('isLoggedIn is', props)
     return <Redirect to="/home" />;
   }
 

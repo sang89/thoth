@@ -4,7 +4,7 @@ import * as urls from './constants';
 class AuthService {
   login(username: any, password: any) {
     return axios
-      .post(urls.AUTH_BACKEND_URL + "/signin", { username, password })
+      .post(urls.AUTH_BACKEND_URL + "/login", { username, password })
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
